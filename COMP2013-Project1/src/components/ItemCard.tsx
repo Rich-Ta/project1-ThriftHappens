@@ -1,13 +1,19 @@
 import { type ClothingProduct } from "../data/data";
-import { useState } from "react";
 
 interface ItemCardProps {
   product: ClothingProduct;
+  itemQuantity: number;
+  handleItemQuantityChange: (
+    productId: number,
+    updatedQuantity: number,
+  ) => void;
 }
 
-function ItemCard({ product }: ItemCardProps) {
-  const [itemQuantity, setItemQuantity] = useState(0);
-
+function ItemCard({
+  product,
+  itemQuantity,
+  handleItemQuantityChange,
+}: ItemCardProps) {
   return (
     <div className="item-card">
       <img src={product.image} alt={product.name} />
@@ -27,7 +33,7 @@ function ItemCard({ product }: ItemCardProps) {
           className="minus"
           onClick={() => {
             if (itemQuantity > 0) {
-              setItemQuantity(itemQuantity - 1);
+              handleItemQuantityChange(product.id, itemQuantity - 1);
             }
           }}
         >
@@ -40,7 +46,7 @@ function ItemCard({ product }: ItemCardProps) {
           className="plus"
           onClick={() => {
             if (itemQuantity < product.quantity) {
-              setItemQuantity(itemQuantity + 1);
+              handleItemQuantityChange(product.id, itemQuantity + 1);
             }
           }}
         >
