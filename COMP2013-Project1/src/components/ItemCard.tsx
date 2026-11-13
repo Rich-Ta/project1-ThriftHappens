@@ -26,7 +26,7 @@ function ItemCard({
         </p>
       </div>
       <p>{product.description}</p>
-      <h3>${product.price}.00</h3>
+      <h3>${product.price.toFixed(2)}</h3>
       <p>
         In stock: {product.quantity}{" "}
         {product.quantity === 0 ? "(Out of Stock)" : ""}

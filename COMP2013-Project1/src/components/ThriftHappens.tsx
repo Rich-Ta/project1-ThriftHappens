@@ -7,7 +7,29 @@ function ThriftHappens() {
   const [itemQuantity, setItemQuantity] = useState(products);
   const [checkoutItems, setCheckoutItems] = useState<ClothingProduct[]>([]);
 
-  function handleRemoveFromCheckout(productId: number) {}
+  function handleRemoveFromCheckout(productId: number) {
+    const itemToRemove = checkoutItems.find(
+      (product) => product.id === productId,
+    );
+
+    if (itemToRemove) {
+      const updatedCheckout = checkoutItems.filter(
+        (product) => product.id !== productId,
+      );
+      setCheckoutItems(updatedCheckout);
+
+      const updatedInventory = itemQuantity.map((product) =>
+        product.id === productId
+          ? {
+              ...product,
+              quantity: product.quantity + itemToRemove.itemQuantity,
+            }
+          : product,
+      );
+
+      setItemQuantity(updatedInventory);
+    }
+  }
 
   function handleAddToCheckout(productId: number) {
     const selectedItems = itemQuantity.filter(

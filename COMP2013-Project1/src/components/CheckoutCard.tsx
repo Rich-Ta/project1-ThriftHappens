@@ -6,7 +6,11 @@ interface CheckoutCardProps {
   handleRemoveFromCheckout: (productId: number) => void;
 }
 
-function CheckoutCard({ product, itemQuantity }: CheckoutCardProps) {
+function CheckoutCard({
+  product,
+  itemQuantity,
+  handleRemoveFromCheckout,
+}: CheckoutCardProps) {
   return (
     <div className="checkout-card">
       <img src={product.image} alt={product.name} />
@@ -18,7 +22,7 @@ function CheckoutCard({ product, itemQuantity }: CheckoutCardProps) {
       </div>
 
       <p>{product.description}</p>
-      <p>${product.price}.00</p>
+      <p>${product.price.toFixed(2)}</p>
 
       <p>Current Amount: {itemQuantity}</p>
       <button
