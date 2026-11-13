@@ -26,7 +26,7 @@ function ItemCard({
         </p>
       </div>
       <p>{product.description}</p>
-      <h3>${product.price.toFixed(2)}</h3>
+      <h3>Price: ${product.price.toFixed(2)} each</h3>
       <p>
         In stock: {product.quantity}{" "}
         {product.quantity === 0 ? "(Out of Stock)" : ""}
@@ -35,7 +35,7 @@ function ItemCard({
       <div className="quantity-selector">
         <button
           type="button"
-          className="minus-button"
+          className="button"
           onClick={() => {
             if (itemQuantity > 0) {
               handleItemQuantityChange(product.id, itemQuantity - 1);
@@ -48,7 +48,7 @@ function ItemCard({
         <h4>Item(s) selected: {itemQuantity}</h4>
         <button
           type="button"
-          className="plus-button"
+          className="button"
           onClick={() => {
             if (itemQuantity < product.quantity) {
               handleItemQuantityChange(product.id, itemQuantity + 1);
@@ -61,7 +61,7 @@ function ItemCard({
 
         <button
           type="button"
-          className="confirm-button"
+          className="button"
           onClick={() => {
             handleAddToCheckout(product.id);
           }}

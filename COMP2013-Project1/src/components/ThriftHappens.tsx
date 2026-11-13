@@ -2,6 +2,7 @@ import ItemsContainer from "./ItemsContainer";
 import { products } from "../data/data";
 import { useState } from "react";
 import type { ClothingProduct } from "../data/data";
+import CheckoutContainer from "./CheckoutContainer";
 
 function ThriftHappens() {
   const [itemQuantity, setItemQuantity] = useState(products);
@@ -97,6 +98,11 @@ function ThriftHappens() {
         itemQuantity={itemQuantity}
         handleItemQuantityChange={handleItemQuantityChange}
         handleAddToCheckout={handleAddToCheckout}
+      />
+
+      <CheckoutContainer
+        checkoutItems={checkoutItems}
+        handleRemoveFromCheckout={handleRemoveFromCheckout}
       />
     </div>
   );
