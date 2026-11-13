@@ -7,11 +7,13 @@ interface ItemsContainerProps {
     productId: number,
     updatedQuantity: number,
   ) => void;
+  handleAddToCheckout: (productId: number) => void;
 }
 
 function ItemsContainer({
   itemQuantity,
   handleItemQuantityChange,
+  handleAddToCheckout,
 }: ItemsContainerProps) {
   return (
     <div className="items-container">
@@ -21,6 +23,7 @@ function ItemsContainer({
           product={product}
           itemQuantity={product.itemQuantity}
           handleItemQuantityChange={handleItemQuantityChange}
+          handleAddToCheckout={handleAddToCheckout}
         />
       ))}
     </div>

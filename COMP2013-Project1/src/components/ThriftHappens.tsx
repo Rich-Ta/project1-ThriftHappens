@@ -1,9 +1,61 @@
 import ItemsContainer from "./ItemsContainer";
 import { products } from "../data/data";
 import { useState } from "react";
+import type { ClothingProduct } from "../data/data";
 
 function ThriftHappens() {
   const [itemQuantity, setItemQuantity] = useState(products);
+  const [checkoutItems, setCheckoutItems] = useState<ClothingProduct[]>([]);
+
+  function handleRemoveFromCheckout(productId: number) {}
+
+  function handleAddToCheckout(productId: number) {
+    const selectedItems = itemQuantity.filter(
+      // for selectedItems before checkout
+
+      (product) => product.itemQuantity > 0,
+    );
+    const item = selectedItems.find((product) => product.id === productId); //for each individual item
+
+    if (!item || item.itemQuantity <= 0) {
+      return;
+    }
+
+    if (item.itemQuantity > item.quantity) {
+      return;
+    }
+
+    const existingItem = checkoutItems.find(
+      (product) => product.id === productId,
+    );
+
+    if (existingItem) {
+      const updatedCheckout = checkoutItems.map((product) =>
+        product.id === productId
+          ? {
+              ...product,
+              itemQuantity: product.itemQuantity + item.itemQuantity,
+            }
+          : product,
+      );
+
+      setCheckoutItems(updatedCheckout);
+    } else {
+      setCheckoutItems([...checkoutItems, { ...item }]);
+    }
+
+    const updatedProducts = itemQuantity.map((product) =>
+      product.id === productId
+        ? {
+            ...product,
+            quantity: product.quantity - product.itemQuantity,
+            itemQuantity: 0,
+          }
+        : product,
+    );
+
+    setItemQuantity(updatedProducts);
+  }
 
   function handleItemQuantityChange(
     productId: number,
@@ -22,6 +74,7 @@ function ThriftHappens() {
       <ItemsContainer
         itemQuantity={itemQuantity}
         handleItemQuantityChange={handleItemQuantityChange}
+        handleAddToCheckout={handleAddToCheckout}
       />
     </div>
   );
