@@ -10,6 +10,7 @@ function CheckoutContainer({
   checkoutItems,
   handleRemoveFromCheckout,
 }: CheckoutContainerProps) {
+  //calculating total
   const total = checkoutItems.reduce(
     (total, product) => total + product.price * product.itemQuantity,
     0,

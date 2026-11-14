@@ -8,6 +8,7 @@ function ThriftHappens() {
   const [itemQuantity, setItemQuantity] = useState(products);
   const [checkoutItems, setCheckoutItems] = useState<ClothingProduct[]>([]);
 
+  //Handler for when user removes item from checkout
   function handleRemoveFromCheckout(productId: number) {
     const itemToRemove = checkoutItems.find(
       (product) => product.id === productId,
@@ -31,6 +32,8 @@ function ThriftHappens() {
       setItemQuantity(updatedInventory);
     }
   }
+
+  //handler when user adds selected item to the checkout container
 
   function handleAddToCheckout(productId: number) {
     const selectedItems = itemQuantity.filter(
@@ -79,6 +82,8 @@ function ThriftHappens() {
 
     setItemQuantity(updatedProducts);
   }
+
+  //Handler for when user clicks plus or minus button
 
   function handleItemQuantityChange(
     productId: number,
