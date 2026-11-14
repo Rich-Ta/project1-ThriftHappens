@@ -94,15 +94,15 @@ function ThriftHappens() {
   }
   return (
     <div>
+      <CheckoutContainer
+        checkoutItems={checkoutItems}
+        handleRemoveFromCheckout={handleRemoveFromCheckout}
+      />
+
       <ItemsContainer
         itemQuantity={itemQuantity}
         handleItemQuantityChange={handleItemQuantityChange}
         handleAddToCheckout={handleAddToCheckout}
-      />
-
-      <CheckoutContainer
-        checkoutItems={checkoutItems}
-        handleRemoveFromCheckout={handleRemoveFromCheckout}
       />
     </div>
   );
