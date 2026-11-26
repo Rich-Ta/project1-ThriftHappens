@@ -1,7 +1,7 @@
-import type { ClothingProduct } from "../data/data";
+import type { CheckoutItems } from "./ThriftHappens";
 
 interface CheckoutCardProps {
-  product: ClothingProduct;
+  product: CheckoutItems;
   itemQuantity: number;
   handleRemoveFromCheckout: (productId: number) => void;
 }
@@ -15,12 +15,6 @@ function CheckoutCard({
     <div className="checkout-card">
       <img src={product.image} alt={product.name} />
       <h3>{product.name}</h3>
-      <div>
-        <p>
-          {product.color} | {product.fit} | {product.category} | {product.size}
-        </p>
-      </div>
-      <p>{product.description}</p>
 
       <div className="subtotal-box">
         <h3>Subtotal: ${(itemQuantity * product.price).toFixed(2)}</h3>

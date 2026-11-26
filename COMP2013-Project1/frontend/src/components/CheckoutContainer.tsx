@@ -1,8 +1,8 @@
-import type { ClothingProduct } from "../data/data";
+import type { CheckoutItems } from "./ThriftHappens";
 import CheckoutCard from "./CheckoutCard";
 
 interface CheckoutContainerProps {
-  checkoutItems: ClothingProduct[];
+  checkoutItems: CheckoutItems[];
   handleRemoveFromCheckout: (productId: number) => void;
 }
 
@@ -12,7 +12,7 @@ function CheckoutContainer({
 }: CheckoutContainerProps) {
   //calculating total
   const total = checkoutItems.reduce(
-    (total, product) => total + product.price * product.itemQuantity,
+    (total, product) => total + product.price * product.userQuantity,
     0,
   );
 
@@ -25,7 +25,7 @@ function CheckoutContainer({
           <CheckoutCard
             key={product.id}
             product={product}
-            itemQuantity={product.itemQuantity}
+            itemQuantity={product.userQuantity}
             handleRemoveFromCheckout={handleRemoveFromCheckout}
           />
         ))}

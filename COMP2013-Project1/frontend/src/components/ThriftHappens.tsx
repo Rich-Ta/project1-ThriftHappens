@@ -1,8 +1,9 @@
 import ItemsContainer from "./ItemsContainer";
-import { useEffect, useState } from "react";
+import { useEffect, useState, type SubmitEvent, type ChangeEvent } from "react";
 import type { ClothingProduct } from "../data/data";
 import CheckoutContainer from "./CheckoutContainer";
 import axios from "axios";
+import FormComponent from "./FormComponent";
 
 export interface ItemsContainerProps {
   products: ClothingProduct[];
@@ -44,16 +45,59 @@ export interface CheckoutContainerProps {
   handleEmptyCheckout: () => void;
 }
 
+export interface FormComponentProps {
+  clothesArticle: ClothingProduct;
+  responseMessage: string;
+  handleOnSubmit: (e: SubmitEvent<HTMLFormElement>) => void;
+  handleOnChange: (
+    e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>,
+  ) => void;
+}
+
 export default function ThriftHappens() {
   const [products, setProducts] = useState<ClothingProduct[]>([]);
   const [itemQuantity, setItemQuantity] = useState<ItemQuantity[]>([]);
   const [checkoutItems, setCheckoutItems] = useState<CheckoutItems[]>([]);
+  const [responseMessage, setResponseMessage] = useState<string>("");
+  const [clothesArticle, setClothesArticle] = useState<ClothingProduct>({
+    id: -1,
+    name: "",
+    image: "",
+    fit: "men",
+    category: "hoodie",
+    size: "M",
+    color: "",
+    description: "",
+    price: 0,
+    quantity: 0,
+    itemQuantity: 0,
+  });
+
+  async function getProductsFromDB() {
+    try {
+      const { data } = await axios.get("http://localhost:3000/data");
+      setProducts(
+        data.sort((a: ClothingProduct, b: ClothingProduct) => b.id - a.id),
+      );
+      setItemQuantity(
+        data.map((product: ClothingProduct) => ({
+          id: product.id,
+          userQuantity: 0,
+          remainQuantity: product.quantity,
+        })),
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   useEffect(() => {
     async function getProductsFromDB() {
       try {
         const { data } = await axios.get("http://localhost:3000/data");
-        setProducts(data);
+        setProducts(
+          data.sort((a: ClothingProduct, b: ClothingProduct) => b.id - a.id),
+        );
         setItemQuantity(
           data.map((product: ClothingProduct) => ({
             id: product.id,
@@ -65,7 +109,6 @@ export default function ThriftHappens() {
         console.log(error);
       }
     }
-
     getProductsFromDB();
   }, []);
 
@@ -158,11 +201,64 @@ export default function ThriftHappens() {
 
     setItemQuantity(updatedItems);
   }
+
+  function handleOnChange(
+    e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>,
+  ) {
+    const { name, value } = e.target;
+    const numericFields = ["id", "price", "quantity", "itemQuantity"];
+
+    setClothesArticle((prevArticle) => ({
+      ...prevArticle,
+      [name]: numericFields.includes(name) ? Number(value) : value,
+    }));
+  }
+
+  async function handleOnSubmit(e: SubmitEvent<HTMLFormElement>) {
+    e.preventDefault();
+
+    // if input on form is brand new, then use POST route to create new clothing article
+    if (clothesArticle.id === -1) {
+      try {
+        await axios
+          .post("http://localhost:3000/data", {
+            ...clothesArticle,
+            id: parseInt((Math.random() * 10000 + 50).toFixed(0)),
+          })
+          .then((response) => setResponseMessage(response.data.message));
+
+        await getProductsFromDB();
+        setClothesArticle({
+          id: -1,
+          name: "",
+          image: "",
+          fit: "men",
+          category: "hoodie",
+          size: "M",
+          color: "",
+          description: "",
+          price: 0,
+          quantity: 0,
+          itemQuantity: 0,
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  }
+
   return (
     <div>
       <CheckoutContainer
         checkoutItems={checkoutItems}
         handleRemoveFromCheckout={handleRemoveFromCheckout}
+      />
+
+      <FormComponent
+        clothesArticle={clothesArticle}
+        responseMessage={responseMessage}
+        handleOnSubmit={handleOnSubmit}
+        handleOnChange={handleOnChange}
       />
 
       <ItemsContainer

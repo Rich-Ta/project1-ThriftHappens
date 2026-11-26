@@ -50,3 +50,45 @@ server.get("/data", async (request, response) => {
     response.status(500).send(error);
   }
 });
+
+// POST route to add a new item to the DB
+
+server.post("/data", async (request, response) => {
+  const {
+    id,
+    name,
+    image,
+    fit,
+    category,
+    size,
+    color,
+    description,
+    price,
+    quantity,
+    itemQuantity,
+  } = request.body;
+  const newArticle = new ClothesItem({
+    id,
+    name,
+    image,
+    fit,
+    category,
+    size,
+    color,
+    description,
+    price,
+    quantity,
+    itemQuantity,
+  });
+  try {
+    await newArticle.save();
+    response
+      .status(201)
+      .send({
+        message: `The new item with id ${id} has been added successfully.`,
+      });
+  } catch (error) {
+    console.log(error);
+    response.send(500).send(error);
+  }
+});
