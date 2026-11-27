@@ -82,13 +82,42 @@ server.post("/data", async (request, response) => {
   });
   try {
     await newArticle.save();
-    response
-      .status(201)
-      .send({
-        message: `The new item with id ${id} has been added successfully.`,
-      });
+    response.status(201).send({
+      message: `The new item with id ${id} has been added successfully.`,
+    });
   } catch (error) {
     console.log(error);
     response.send(500).send(error);
+  }
+});
+
+//DELETE route to delete a single ClothesArticle by id
+
+server.delete("/data/:id", async (request, response) => {
+  const id = Number(request.params.id);
+  try {
+    await ClothesItem.findOneAndDelete({ id });
+    response
+      .status(201)
+      .send({ message: `Item with ID ${id} has been deleted` });
+  } catch (error) {
+    console.log(error);
+    response.status(500).send(error);
+  }
+});
+
+//PATCH route to edit a single Clothes Article by ID
+
+server.patch("/data/:id", async (request, response) => {
+  const id = Number(request.params.id);
+  const clothesArticle = request.body;
+  try {
+    await ClothesItem.findOneAndUpdate({ id }, { ...clothesArticle });
+    response
+      .status(201)
+      .send({ message: `Item with ID ${id} has been successfully updated` });
+  } catch (error) {
+    console.log(error);
+    response.status(500).send(error);
   }
 });

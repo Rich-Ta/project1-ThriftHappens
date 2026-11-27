@@ -18,6 +18,8 @@ interface ItemsContainerProps {
     userQuantity: number,
     price: number,
   ) => void;
+  handleDeleteItem: (id: number) => void;
+  handleEditItem: (id: number) => void;
 }
 
 function ItemsContainer({
@@ -25,6 +27,8 @@ function ItemsContainer({
   itemQuantity,
   handleItemQuantityChange,
   handleAddToCheckout,
+  handleDeleteItem,
+  handleEditItem,
 }: ItemsContainerProps) {
   return (
     <div className="items-container">
@@ -43,6 +47,8 @@ function ItemsContainer({
             remainQuantity={selectedItem.remainQuantity}
             handleItemQuantityChange={handleItemQuantityChange}
             handleAddToCheckout={handleAddToCheckout}
+            handleDeleteItem={handleDeleteItem}
+            handleEditItem={handleEditItem}
           />
         );
       })}

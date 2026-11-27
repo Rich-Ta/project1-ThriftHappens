@@ -17,6 +17,8 @@ interface ItemCardProps {
     userQuantity: number,
     price: number,
   ) => void;
+  handleDeleteItem: (id: number) => void;
+  handleEditItem: (id: number) => void;
 }
 
 function ItemCard({
@@ -25,6 +27,8 @@ function ItemCard({
   remainQuantity,
   handleItemQuantityChange,
   handleAddToCheckout,
+  handleDeleteItem,
+  handleEditItem,
 }: ItemCardProps) {
   return (
     <div className="item-card">
@@ -83,6 +87,10 @@ function ItemCard({
         >
           Add to Checkout
         </button>
+      </div>
+      <div>
+        <button onClick={() => handleEditItem(product.id)}>Edit</button>
+        <button onClick={() => handleDeleteItem(product.id)}>Delete</button>
       </div>
     </div>
   );
